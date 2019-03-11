@@ -1,0 +1,75 @@
+---
+title: "README"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(collapse = TRUE)
+knitr::opts_chunk$set(warning = FALSE)
+knitr::opts_chunk$set(message = FALSE)
+knitr::opts_chunk$set(comment = NA)
+knitr::opts_chunk$set(tidy = FALSE)
+knitr::opts_chunk$set(echo = FALSE)
+
+## load the packages
+library(DiagrammeR)
+```
+
+
+# About
+
+R package to parse IPEDS data as a graph
+
+## Why
+
+I suspect it could be easier to map data files over time with a simple model:
+
+```{r}
+DiagrammeR::grViz("
+
+digraph neo4ipeds {
+
+########## build the ndoe
+
+## basic node settings
+# node [shape = circle, 
+#       style = filled,
+#       ]
+
+## unitid
+node [shape = circle, fillcolor = DodgerBlue]
+UNITID
+
+## survey
+node [shape = circle, fillcolor = AquaMarine]
+SFA1415; SFA1516; SFA1617
+
+## academic year
+node [shape = circle, fillcolor = yellow]
+AY1415; AY1516; AY1617
+
+## question
+node [shape = circle]
+IGRNT_P; FGRNT_P; NPT450
+
+
+# add edge statements
+SFA1415->IGRNT_P [label = 'ASKED'];
+SFA1516->IGRNT_P [label = 'ASKED'];
+SFA1516->FGRNT_P [label = 'ASKED'];
+SFA1516->FGRNT_P [label = 'ASKED'];
+SFA1617->NPT450 [label = 'ASKED'];
+UNITID->IGRNT_P [label = 'ANSWERED'];
+UNITID->FGRNT_P [label = 'ANSWERED'];
+UNITID->NPT450 [label = 'ANSWERED'];
+AY1415->SFA1415 [label = 'INCL_SURVEY'];
+AY1516->SFA1516 [label = 'INCL_SURVEY'];
+AY1617->SFA1617 [label = 'INCL_SURVEY']
+}
+")
+
+```
+
+
+
+
